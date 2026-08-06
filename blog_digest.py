@@ -19,7 +19,7 @@ import time
 import mailer
 
 # Configuration
-_email_to_raw = os.getenv("EMAIL_TO", "ajfraifeld@gmail.com")
+_email_to_raw = os.getenv("EMAIL_TO", "")
 EMAIL_RECIPIENTS = [e.strip() for e in _email_to_raw.split(",") if e.strip()]
 ARTICLES_PER_DAY = 10
 MIN_PER_SOURCE = 1  # Guarantee at least 1 article per source

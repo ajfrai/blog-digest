@@ -1,5 +1,8 @@
 # Daily AI Blog Digest
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Python 3](https://img.shields.io/badge/python-3-blue.svg)](https://www.python.org/)
+
 Automated script that sends you 10 blog articles daily from top AI research blogs, with smart tracking that excludes articles you've read or downvoted.
 
 ## Blogs Monitored
@@ -59,7 +62,7 @@ export SMTP_PASSWORD='your-app-password'
 ~/run_blog_digest.sh
 ```
 
-You should receive an email with 3 articles at ajfraifeld@gmail.com
+You should receive an email with 3 articles at your configured SMTP_USER address.
 
 ## How It Works
 
