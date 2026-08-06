@@ -1,0 +1,15 @@
+# Cloudflare Worker configuration for Blog Digest Tracker
+# Deploy using: npx wrangler deploy
+
+name = "blog-digest-tracker"
+main = "worker.js"
+compatibility_date = "2024-01-01"
+
+# KV Namespace binding
+# After creating your KV namespace, update the id below with your namespace ID
+[[kv_namespaces]]
+binding = "BLOG_STATE"
+id = "a149109666ff41918a5560bc8cfd3f46"
+
+# Alternatively, for development:
+# preview_id = "YOUR_PREVIEW_KV_NAMESPACE_ID"

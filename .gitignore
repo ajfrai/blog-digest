@@ -1,0 +1,14 @@
+# Secrets / credentials
+.blog_digest_env
+.claude/settings.local.json
+
+# Runtime state & personal data
+.blog_digest_state.json
+blog_digest.log
+
+# Python
+__pycache__/
+*.pyc
+
+# Cloudflare Workers
+.wrangler/
