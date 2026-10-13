@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>__TITLE__</title>
+<meta name="description" content="__DESCRIPTION__">
+<meta property="og:title" content="__TITLE__">
+<meta property="og:description" content="__DESCRIPTION__">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#FAFBFC; --surf:#EFF1F4; --fg:#12161C; --mut:#5A6370; --line:#DDE1E7; --acc:#1F4FD8;
+  --good:#1E7F4B; --mid:#8F6200; --bad:#B3362B;
+  --sans:'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,'SF Mono',Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){ :root{
+  --bg:#101318; --surf:#181C23; --fg:#E4E8EE; --mut:#939CAA; --line:#262B34; --acc:#86A8FF;
+  --good:#62CE92; --mid:#E5B24A; --bad:#F0867B; color-scheme:dark } }
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 var(--sans);
+  padding:max(20px,env(safe-area-inset-top)) 16px max(56px,env(safe-area-inset-bottom))}
+main{max-width:46rem;margin:0 auto}
+h1,h2,h3,h4,h5,p,ul,ol{margin:0}
+ul,ol{padding:0;list-style:none}
+button{font:inherit;color:inherit;cursor:pointer}
+a{color:var(--acc)}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+[hidden]{display:none!important}
+
+.head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:.2rem 1rem;padding-bottom:.7rem;border-bottom:2px solid var(--fg)}
+.brand{font-weight:600;font-size:1.15rem;letter-spacing:-.01em;color:inherit;text-decoration:none}
+.meta{font:.72rem var(--mono);color:var(--mut)}
+.subject{font:600 1.45rem/1.2 var(--sans);letter-spacing:-.015em;text-wrap:balance;padding:1rem 0 .2rem}
+
+.chev{width:.45rem;height:.45rem;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(-45deg);transition:transform .15s;flex:none;justify-self:center;align-self:center}
+[aria-expanded="true"]>.chev{transform:rotate(45deg) translate(-1px,-1px)}
+@media (prefers-reduced-motion: reduce){.chev{transition:none}}
+
+.grp{border-bottom:1px solid var(--fg);scroll-margin-top:8px}
+.grp-h{display:flex;align-items:center;gap:.6rem;width:100%;text-align:left;background:none;border:0;padding:.85rem 0 .55rem}
+.grp-h .chev{color:var(--acc)}
+.grp-h .lbl{font:500 .7rem var(--mono);letter-spacing:.08em;text-transform:uppercase}
+.grp-h .n{font:.7rem var(--mono);color:var(--mut)}
+.grp-h .peek{font-size:.8rem;color:var(--mut);margin-left:auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:60%}
+.grp-h[aria-expanded="true"] .peek{display:none}
+
+.brief-body{padding-bottom:1rem;display:flex;flex-direction:column;gap:.8rem}
+.brief-lead{font-size:1.02rem;line-height:1.5;max-width:60ch}
+.brief-list button{display:grid;grid-template-columns:2.7rem minmax(0,1fr);gap:.6rem;align-items:baseline;width:100%;text-align:left;background:none;border:0;padding:.3rem 0;font-size:.9rem;line-height:1.4}
+.brief-list button:hover span:last-child{color:var(--acc)}
+.tag{font:500 .66rem var(--mono);color:var(--acc);letter-spacing:.04em}
+
+.tools{display:flex;justify-content:flex-end;padding-top:.6rem}
+.tools button{font:.7rem var(--mono);color:var(--mut);background:none;border:0;padding:.2rem 0;text-decoration:underline;text-underline-offset:3px}
+
+.rows li{border-top:1px solid var(--line)}
+.row{display:grid;grid-template-columns:1rem minmax(0,1fr) auto;gap:.6rem;align-items:baseline;width:100%;text-align:left;background:none;border:0;padding:.62rem 0}
+.row .chev{color:var(--mut)}
+.row:hover .title{color:var(--acc)}
+.title{font-weight:500;font-size:.92rem;line-height:1.35}
+.side{font:.7rem var(--mono);color:var(--mut);white-space:nowrap}
+.detail{padding:0 0 1rem 1.6rem;display:flex;flex-direction:column;gap:.65rem;font-size:.92rem;max-width:42rem}
+.detail .by{font:.72rem var(--mono);color:var(--mut)}
+.src{font:.72rem var(--mono);color:var(--mut);display:flex;flex-wrap:wrap;gap:.35rem .5rem;align-items:baseline}
+.src a{text-underline-offset:3px}
+.src .dom{margin-right:.5rem}
+@media (max-width:520px){.detail{padding-left:0}}
+
+.chip{display:inline-flex;align-items:center;gap:.35em;font:600 .72rem var(--sans);white-space:nowrap;color:var(--tone)}
+.chip.t3{--tone:var(--good)} .chip.t2{--tone:var(--mid)} .chip.t1{--tone:var(--bad)}
+.pips{display:inline-flex;gap:2px}
+.pips i{width:6px;height:6px;border-radius:50%;border:1px solid var(--tone)}
+.pips i.on{background:var(--tone)}
+.claude{background:var(--surf);border-radius:6px;padding:.65rem .8rem;font-size:.88rem;line-height:1.5;display:flex;flex-direction:column;gap:.25rem}
+.claude-top{display:flex;flex-wrap:wrap;gap:.2rem .6rem;align-items:center}
+.claude-top b{font-size:.68rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--mut)}
+
+.app{border:1px solid var(--line);border-radius:8px;overflow:hidden;min-width:0}
+.app-bar{display:flex;justify-content:space-between;gap:.6rem;padding:.45rem .7rem;background:var(--surf);font:.7rem var(--mono);color:var(--mut)}
+.app-body{padding:.8rem .7rem;display:flex;flex-direction:column;gap:.7rem}
+.app iframe{display:block;width:100%;height:440px;border:0;background:var(--bg)}
+.btn{border:1px solid var(--line);background:var(--bg);border-radius:5px;padding:.35rem .7rem;font-size:.82rem;font-weight:500}
+.btn:hover{border-color:var(--fg)}
+.btn:disabled{opacity:.4;cursor:default;border-color:var(--line)}
+.btn.primary{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.lesson{border:1.5px solid var(--fg)}
+.lesson .app-bar{color:var(--fg);font-weight:500}
+.slide{display:flex;flex-direction:column;gap:.55rem;height:22.5rem;overflow:hidden}
+.fig{flex:none;width:100%;aspect-ratio:320/170;max-height:12.5rem;background:var(--surf);border-radius:6px;display:grid;place-items:center;overflow:hidden}
+.fig img{width:100%;height:100%;object-fit:contain;display:block}
+.slide h5{flex:none;font:600 1.12rem/1.25 var(--sans);letter-spacing:-.01em;text-wrap:balance}
+.slide .txt{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:.5rem}
+.slide p{font-size:.92rem;line-height:1.45;max-width:54ch}
+.slide pre{margin:0;font:.74rem/1.5 var(--mono);background:var(--surf);border-radius:6px;padding:.5rem .65rem;overflow-x:auto}
+.dots{display:flex;gap:5px;margin-inline:auto}
+.dots i{width:7px;height:7px;border-radius:50%;background:var(--line)}
+.dots i.on{background:var(--fg)}
+.lesson .nav .btn{padding:.5rem 1rem;font-size:.9rem}
+.legend{font:.7rem var(--mono);color:var(--mut)}
+.prompt{font:.8rem/1.5 var(--mono);background:var(--surf);border-radius:6px;padding:.65rem .75rem;user-select:all;overflow-wrap:anywhere}
+.nav{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+.nav .at{font:.72rem var(--mono);color:var(--mut);margin-inline:auto}
+.try{border-top:1px solid var(--line);padding:.55rem .7rem}
+.try summary{font:.72rem var(--mono);color:var(--mut);cursor:pointer}
+.try[open] summary{margin-bottom:.5rem}
+.try .prompt{margin-bottom:.5rem}
+
+.pod{display:grid;grid-template-columns:auto minmax(0,1fr);gap:.75rem;align-items:center;padding:.8rem 0;border-bottom:1px solid var(--fg);scroll-margin-top:8px}
+.pod-play{width:2.6rem;height:2.6rem;border-radius:50%;border:0;background:var(--fg);color:var(--bg);font-size:.8rem;display:grid;place-items:center}
+.pod-main{display:flex;flex-direction:column;gap:.4rem;min-width:0}
+.pod-top{display:flex;justify-content:space-between;gap:.6rem;align-items:baseline}
+.pod-top b{font-weight:500;font-size:.9rem}
+.pod-track{height:14px;display:flex;align-items:center;cursor:pointer;touch-action:none}
+.pod-track div{height:4px;width:100%;background:var(--line);border-radius:2px;overflow:hidden}
+.pod-fill{display:block;height:100%;width:0;background:var(--acc)}
+.pod-ch{display:flex;gap:.35rem;overflow-x:auto}
+.pod-ch button{font:500 .66rem var(--mono);border:1px solid var(--line);background:none;color:var(--mut);border-radius:4px;padding:.15rem .4rem;white-space:nowrap}
+.pod-ch button[aria-pressed="true"]{color:var(--acc);border-color:var(--acc)}
+
+footer{margin-top:2.2rem;display:flex;flex-direction:column;gap:.6rem;color:var(--mut);font-size:.82rem}
+footer h2{font:500 .7rem var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--fg)}
+.archive li{display:grid;grid-template-columns:6.2rem minmax(0,1fr);gap:.6rem;padding:.25rem 0}
+.archive .d{font:.72rem var(--mono)}
+.archive a{color:var(--fg);text-decoration:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.archive a:hover{color:var(--acc)}
+.archive [aria-current] a{color:var(--mut)}
+</style>
+</head>
+<body>
+<main id="app"></main>
+<script id="data" type="application/json">__DATA__</script>
+<script>
+const {issue, archive} = JSON.parse(document.getElementById('data').textContent);
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+const safeUrl = u => /^https?:\/\//i.test(u) ? u : '#';
+const mmss = s => Math.floor(s/60)+':'+String(Math.floor(s%60)).padStart(2,'0');
+const total = issue.sections.reduce((n,s)=>n+s.items.length,0);
+const demos = {};
+
+const pips = n => `<span class="pips" aria-hidden="true">${[1,2,3].map(i=>`<i class="${i<=n?'on':''}"></i>`).join('')}</span>`;
+const chip = r => `<span class="chip t${r.n}">${pips(r.n)}${esc(r.label)}</span>`;
+const fold = (id,label,n,peek,open) => `<button class="grp-h" aria-expanded="${open}" aria-controls="${id}"><span class="chev"></span><span class="lbl">${esc(label)}</span>${n?`<span class="n">${n}</span>`:''}<span class="peek">${esc(peek)}</span></button>`;
+
+function promptBox(key, d){
+  return `<div class="prompt" id="p-${key}">${esc(d.try_prompt)}</div>
+  <div class="nav"><button class="btn" data-copy="${key}">Copy prompt</button><span class="legend" id="m-${key}" role="status"></span></div>`;
+}
+function tryBox(key, d){
+  return d.try_prompt ? `<details class="try"><summary>Try it in Claude Code</summary>${promptBox(key, d)}</details>` : '';
+}
+function demoShell(key, item){
+  const d = item.demo; if(!d) return '';
+  demos[key] = {d, slide:0};
+  if(d.kind === 'app')
+    return `<div class="app"><div class="app-bar"><span id="s-${key}">Loading ${esc(d.package.name)}@${esc(d.package.version)}…</span><span>${esc(item.repo||'')}</span></div>
+      <iframe sandbox="allow-scripts" loading="lazy" title="Live demo: ${esc(item.title)}" data-app="${key}"></iframe>${tryBox(key,d)}</div>`;
+  return `<div class="app lesson"><div class="app-bar"><span>Lesson</span><span>${esc(item.repo||'')}</span></div><div class="app-body" id="l-${key}"></div></div>`;
+}
+function drawLesson(key){
+  const st = demos[key], el = $('l-'+key); if(!el) return;
+  // The prompt to try is the closing slide, so the walkthrough itself stays the main event.
+  const n = st.d.slides.length + (st.d.try_prompt ? 1 : 0), s = st.d.slides[st.slide];
+  const fig = s && s.svg ? `<div class="fig"><img alt="Diagram: ${esc(s.title)}" src="data:image/svg+xml;charset=utf-8,${encodeURIComponent(s.svg)}"></div>` : '';
+  const body = s
+    ? `${fig}<h5>${esc(s.title)}</h5><div class="txt">${s.body.split(/\n\s*\n/).map(p=>`<p>${esc(p)}</p>`).join('')}${s.code&&s.code.trim()?`<pre>${esc(s.code)}</pre>`:''}</div>`
+    : `<h5>Try it yourself</h5><div class="txt"><p>Paste this into Claude Code inside your own project.</p>${promptBox(key, st.d)}</div>`;
+  el.innerHTML = `<div class="slide">${body}</div>
+  <div class="nav"><button class="btn" data-step="-1" data-key="${key}" ${st.slide===0?'disabled':''}>Back</button>
+  <span class="dots" role="img" aria-label="Slide ${st.slide+1} of ${n}">${Array.from({length:n},(_,i)=>`<i class="${i===st.slide?'on':''}"></i>`).join('')}</span>
+  <button class="btn ${st.slide<n-1?'primary':''}" data-step="1" data-key="${key}" ${st.slide===n-1?'disabled':''}>Next</button></div>`;
+}
+
+function itemHtml(sec, it, i){
+  const key = sec.id+'-'+i;
+  const links = it.links.length ? `<span class="src">${it.links.map(l=>`<a href="${esc(safeUrl(l.url))}" target="_blank" rel="noopener">${esc(l.label)} ↗</a><span class="dom">${esc(l.domain)}</span>`).join('')}</span>` : '';
+  const rating = it.rating ? `<div class="claude"><div class="claude-top"><b>${esc(it.rating.heading)}</b>${chip(it.rating)}</div><span>${esc(it.rating.text)}</span></div>` : '';
+  return `<li><button class="row" aria-expanded="false"><span class="chev"></span><span class="title">${esc(it.title)}</span><span class="side">${it.rating?chip(it.rating):esc(it.side||'')}</span></button>
+    <div class="detail" hidden>${it.author?`<span class="by">${esc(it.author)}</span>`:''}<p>${esc(it.summary)}</p>${rating}${demoShell(key,it)}${links}</div></li>`;
+}
+
+function render(){
+  const p = issue.podcast;
+  const pod = p ? `<div class="pod" id="listen"><button class="pod-play" id="pod-play" aria-label="Play">▶</button><div class="pod-main">
+      <div class="pod-top"><b>${p.hosts ? esc(p.hosts.join(' and '))+' argue through today' : 'Listen to this issue'}</b><span class="meta" id="pod-time">0:00 / ${mmss(p.duration)}</span></div>
+      <div class="pod-track" id="pod-track"><div><span class="pod-fill" id="pod-fill"></span></div></div>
+      <div class="pod-ch">${p.chapters.map((c,i)=>`<button data-ch="${i}">${esc(c.tag)} ${mmss(c.t)}</button>`).join('')}</div></div>
+      <audio id="pod-audio" preload="none" src="${esc(p.src)}"></audio></div>` : '';
+  $('app').innerHTML = `<div class="head"><a class="brand" href="/">AI Digest</a><div class="meta">${esc(issue.date_label)} · ${total} items</div></div>
+  <h1 class="subject">${esc(issue.subject)}</h1>${pod}
+  <div class="grp">${fold('g-brief','Today in brief','',issue.sections.length+' sections, '+total+' items',true)}
+    <div class="brief-body" id="g-brief"><p class="brief-lead">${esc(issue.lead)}</p>
+    <ul class="brief-list">${issue.sections.map(s=>`<li><button data-jump="${s.id}"><span class="tag">${s.tag}</span><span>${esc(s.brief)}</span></button></li>`).join('')}</ul></div></div>
+  <div class="tools"><button id="fold-all">Collapse all</button></div>
+  ${issue.sections.map(sec=>`<div class="grp" id="${sec.id}">${fold('g-'+sec.id,sec.label,sec.items.length,sec.items[0].title,true)}
+    <ul class="rows" id="g-${sec.id}">${sec.items.map((it,i)=>itemHtml(sec,it,i)).join('')}</ul></div>`).join('')}
+  <footer><h2>Past issues</h2><ul class="archive">${archive.map(a=>`<li ${a.date===issue.date?'aria-current="page"':''}><span class="d">${esc(a.label)}</span><a href="/issues/${esc(a.date)}/">${esc(a.subject)}</a></li>`).join('')}</ul>
+  <p>Summaries, verdicts and demos are written by Claude from the linked sources. Check the source before relying on a claim.</p>${issue.podcast?'<p>The podcast hosts are synthetic voices reading a script written by Claude. Audio generated with ElevenLabs.</p>':''}</footer>`;
+}
+
+function setFold(btn, open){
+  btn.setAttribute('aria-expanded', open);
+  const t = btn.classList.contains('row') ? btn.nextElementSibling : $(btn.getAttribute('aria-controls'));
+  if(!t) return;
+  t.hidden = !open;
+  if(open){
+    t.querySelectorAll('iframe[data-app]:not([srcdoc])').forEach(f => f.srcdoc = demos[f.dataset.app].d.app_html);
+    t.querySelectorAll('[id^="l-"]').forEach(el => { if(!el.innerHTML) drawLesson(el.id.slice(2)); });
+  }
+}
+function syncFoldAll(){
+  const anyOpen = [...document.querySelectorAll('.grp-h')].some(h=>h.getAttribute('aria-expanded')==='true');
+  $('fold-all').textContent = anyOpen ? 'Collapse all' : 'Expand all';
+}
+function openSection(id, scroll){
+  const sec = $(id); if(!sec || !sec.classList.contains('grp')) return;
+  setFold(sec.querySelector('.grp-h'), true); syncFoldAll();
+  if(scroll) sec.scrollIntoView({behavior: reduced()?'auto':'smooth', block:'start'});
+}
+
+function podcast(){
+  const a = $('pod-audio'); if(!a) return;
+  const p = issue.podcast, play = $('pod-play'), track = $('pod-track');
+  const draw = () => {
+    const t = a.currentTime || 0, d = a.duration || p.duration;
+    $('pod-fill').style.width = (t/d*100)+'%';
+    $('pod-time').textContent = mmss(t)+' / '+mmss(d);
+    const cur = p.chapters.filter(c=>c.t<=t+0.05).length-1;
+    document.querySelectorAll('[data-ch]').forEach((b,i)=>b.setAttribute('aria-pressed', i===cur));
+    play.textContent = a.paused ? '▶' : '❚❚';
+    play.setAttribute('aria-label', a.paused ? 'Play' : 'Pause');
+  };
+  ['timeupdate','play','pause','ended','loadedmetadata','seeked'].forEach(e=>a.addEventListener(e, draw));
+  play.addEventListener('click', ()=> a.paused ? a.play() : a.pause());
+  track.addEventListener('click', e => { const r = track.getBoundingClientRect(); a.currentTime = Math.max(0, Math.min(1,(e.clientX-r.left)/r.width)) * (a.duration || p.duration); draw(); });
+  document.querySelectorAll('[data-ch]').forEach(b => b.addEventListener('click', () => {
+    const c = p.chapters[Number(b.dataset.ch)]; a.currentTime = c.t; a.play(); if(c.id !== 'intro') openSection(c.id, false); }));
+  draw();
+}
+
+render(); podcast();
+// Live demos report back once the released package has actually run inside their sandbox.
+addEventListener('message', e => {
+  const f = [...document.querySelectorAll('iframe[data-app]')].find(f => f.contentWindow === e.source);
+  if(!f || !e.data || !e.data.demo) return;
+  const d = demos[f.dataset.app].d, pkg = d.package.name+'@'+d.package.version;
+  $('s-'+f.dataset.app).textContent = e.data.demo === 'ready' ? 'Live demo, running '+pkg : 'Could not load '+pkg+' in this browser';
+});
+document.addEventListener('click', e => {
+  const t = e.target;
+  const st = t.closest('[data-step]'); if(st){ const d = demos[st.dataset.key]; d.slide = Math.max(0, Math.min(d.d.slides.length-(d.d.try_prompt?0:1), d.slide+Number(st.dataset.step))); drawLesson(st.dataset.key); return; }
+  const cp = t.closest('[data-copy]'); if(cp){
+    const key = cp.dataset.copy, msg = $('m-'+key), text = demos[key].d.try_prompt;
+    const fallback = () => { const r = document.createRange(); r.selectNodeContents($('p-'+key)); const s = getSelection(); s.removeAllRanges(); s.addRange(r); msg.textContent = 'Selected. Copy it from here.'; };
+    try{ navigator.clipboard.writeText(text).then(()=>{ msg.textContent = 'Copied'; }, fallback); }catch(_){ fallback(); }
+    return;
+  }
+  if(t.closest('#fold-all')){
+    const heads = [...document.querySelectorAll('.grp-h')];
+    const open = !heads.some(h=>h.getAttribute('aria-expanded')==='true');
+    heads.forEach(h=>setFold(h,open)); syncFoldAll(); return;
+  }
+  const j = t.closest('[data-jump]'); if(j){ openSection(j.dataset.jump, true); try{ history.replaceState(null,'','#'+j.dataset.jump); }catch(_){ } return; }
+  const h = t.closest('.grp-h'); if(h){ setFold(h, h.getAttribute('aria-expanded')!=='true'); syncFoldAll(); return; }
+  const r = t.closest('.row'); if(r) setFold(r, r.getAttribute('aria-expanded')!=='true');
+});
+if(location.hash.length > 1) openSection(location.hash.slice(1), true);
+</script>
+</body>
+</html>
