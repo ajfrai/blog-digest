@@ -794,9 +794,8 @@ def main():
             raise SystemExit("No site URL yet: run with --deploy before sending email")
         send_emails(issue, state["site_url"], args.email)
 
-    cost = sum(u["input"] * 4 + u["output"] * 20 for u in llm.usage_log) / 1e6
     print(f"Done: {sum(len(s['items']) for s in issue['sections'])} items, "
-          f"{len(llm.usage_log)} model calls, about ${cost:.2f}")
+          f"{len(llm.usage_log)} model calls (claude.ai subscription)")
 
 
 if __name__ == "__main__":

@@ -1,46 +1,39 @@
 #!/usr/bin/env python3
-"""Thin wrapper around the Claude API for the issue builder: one prompt in, schema-valid JSON out."""
+"""Thin wrapper around the Claude Code CLI (subscription auth) for the issue builder: one prompt in, schema-valid JSON out."""
 
 import json
-
-import anthropic
+import os
+import subprocess
 
 MODEL = "claude-opus-5-5"
-FALLBACK_BETA = "server-side-fallback-2026-07-01"
+TIMEOUT = 1500
 
-_client = None
 usage_log = []
 
 
-def client():
-    global _client
-    if _client is None:
-        _client = anthropic.Anthropic()
-    return _client
+def ask_json(system, user, schema, effort="medium", max_tokens=None, label=""):
+    """Run one request through the `claude` CLI and return the JSON object that matches `schema`.
 
-
-def ask_json(system, user, schema, effort="medium", max_tokens=48000, label=""):
-    """Run one request and return the parsed JSON object that matches `schema`."""
-    with client().beta.messages.stream(
-        model=MODEL,
-        max_tokens=max_tokens,
-        system=system,
-        messages=[{"role": "user", "content": user}],
-        thinking={"type": "adaptive"},
-        output_config={"effort": effort, "format": {"type": "json_schema", "schema": schema}},
-        betas=[FALLBACK_BETA],
-        fallbacks="default",
-    ) as stream:
-        message = stream.get_final_message()
-
-    usage_log.append({"label": label, "model": message.model,
-                      "input": message.usage.input_tokens, "output": message.usage.output_tokens})
-    if message.stop_reason == "refusal":
-        raise RuntimeError(f"{label}: the model declined this request ({message.stop_details})")
-    if message.stop_reason == "max_tokens":
-        raise RuntimeError(f"{label}: output hit the {max_tokens} token limit before finishing")
-    text = next(block.text for block in message.content if block.type == "text")
-    return json.loads(text)
+    This bills the logged-in claude.ai subscription, not the API: ANTHROPIC_API_KEY is removed from the
+    child's environment so the CLI falls back to the OAuth login. `max_tokens` is accepted for
+    compatibility and ignored (the CLI manages output length).
+    """
+    env = {k: v for k, v in os.environ.items() if k not in ("ANTHROPIC_API_KEY", "ANTHROPIC_AUTH_TOKEN")}
+    cmd = ["claude", "-p", "--output-format", "json", "--json-schema", json.dumps(schema),
+           "--tools", "", "--no-session-persistence", "--system-prompt", system,
+           "--setting-sources", "", "--disable-slash-commands", "--strict-mcp-config",
+           "--model", MODEL, "--effort", effort]
+    proc = subprocess.run(cmd, input=user, capture_output=True, text=True, env=env, timeout=TIMEOUT, cwd="/tmp")
+    try:
+        out = json.loads(proc.stdout)
+    except json.JSONDecodeError:
+        raise RuntimeError(f"{label}: claude CLI failed (exit {proc.returncode}): {(proc.stderr or proc.stdout)[-800:]}")
+    if out.get("is_error") or "structured_output" not in out:
+        raise RuntimeError(f"{label}: claude CLI error: {str(out.get('result') or out)[:800]}")
+    u = out.get("usage", {})
+    usage_log.append({"label": label, "model": MODEL, "input": u.get("input_tokens", 0),
+                      "output": u.get("output_tokens", 0)})
+    return out["structured_output"]
 
 
 def obj(properties, **extra):
