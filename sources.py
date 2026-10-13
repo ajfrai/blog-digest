@@ -40,6 +40,13 @@ NEWS_FEEDS = {
     "Google News: AI research": "https://news.google.com/rss/search?q="
         + quote_plus('AI (breakthrough OR "new model" OR benchmark OR researchers) when:2d')
         + "&hl=en-US&gl=US&ceid=US:en",
+    "Google News: AI coding": "https://news.google.com/rss/search?q="
+        + quote_plus('("AI coding" OR "coding agent" OR "Claude Code" OR Cursor OR Codex OR "vibe coding") when:2d')
+        + "&hl=en-US&gl=US&ceid=US:en",
+    "Google News: AI science": "https://news.google.com/rss/search?q="
+        + quote_plus('(AI OR "machine learning") (protein OR drug OR mathematics OR robotics OR materials OR physics) (discovery OR researchers) when:3d')
+        + "&hl=en-US&gl=US&ceid=US:en",
+    "Hacker News: AI tools": "https://hnrss.org/newest?q=LLM+OR+agent+OR+RAG+OR+%22open+source%22+AI&points=100",
 }
 
 # Repositories whose releases are worth watching for demo-able features.
@@ -51,6 +58,8 @@ REPOS = [
     "ollama/ollama", "ggml-org/llama.cpp", "ml-explore/mlx", "unslothai/unsloth", "BerriAI/litellm",
     "simonw/llm", "vercel/ai", "microsoft/autogen", "crewAIInc/crewAI", "open-webui/open-webui",
     "comfyanonymous/ComfyUI", "chroma-core/chroma", "qdrant/qdrant", "lancedb/lancedb", "browser-use/browser-use",
+    "gradio-app/gradio", "streamlit/streamlit", "mastra-ai/mastra", "instructor-ai/instructor",
+    "langfuse/langfuse", "cline/cline", "microsoft/markitdown", "docling-project/docling", "astral-sh/uv",
 ]
 
 ARXIV_URL = ("http://export.arxiv.org/api/query?search_query=cat:cs.AI+OR+cat:cs.LG+OR+cat:cs.CL"

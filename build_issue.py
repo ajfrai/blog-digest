@@ -75,8 +75,13 @@ repository releases (r*). Pick what goes in today's issue.
 - business: the 5 to 8 most consequential AI business stories (funding, deals, pricing, earnings, product launches \
 with commercial weight, policy that moves money). Group every candidate covering the same story under one entry, \
 strongest source first, at most 4 ids.
-- discoveries: 4 to 6 technical or scientific advances: new models and capabilities, research results, notable \
-findings. Draw from news, lab blog posts or preprints. Group ids the same way.
+- discoveries: 5 to 7 technical or scientific advances, deliberately mixed across these lanes: (a) new models and \
+capabilities and research results; (b) AI-assisted coding and agent developments (coding agents, new techniques for \
+building with them, evals, context and memory methods); (c) libraries, frameworks and packages builders use to make \
+products (new releases, new open-source tools, notable techniques and patterns); (d) science and applied results \
+(biology, math, robotics, physics, materials). Security, jailbreaks and vulnerabilities are welcome but take at most \
+one slot; cover the rest from the other lanes whenever candidates exist. Draw from news, lab blog posts, preprints or \
+repository releases. Group ids the same way.
 - blogs: 5 to 8 thought pieces from the blog candidates (b*) by individual writers or teams that argue or explain \
 something at length. Not product announcements, changelogs, news reports, or link posts that only quote someone \
 else. Include pieces you expect to be weak if they are getting attention; readers want to know what to skip.
